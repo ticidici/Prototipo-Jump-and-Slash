@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class ActionState{
 
+    protected float _lastX = 0, _lastY = 0;
+
     protected PlayerModel _player;
     protected Rigidbody2D _rigidbody;
     protected Transform _transform;
@@ -16,8 +18,26 @@ public abstract class ActionState{
 
     public virtual void MovementInput(float x, float y)
     {
-        Vector2 currentPosition = _player.GetComponent<Transform>().position;
-        _player.GetComponent<Transform>().position = currentPosition + Vector2.right * x * 8 * Time.deltaTime;//Coger verlocidad de PowerState
+        if (_lastX * x < 0)//Derrape
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * 0.5f, _rigidbody.velocity.y);
+        }
+
+        if (_lastX != 0 && x == 0)//Parón
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * 0.65f, _rigidbody.velocity.y);
+        }
+        if (Mathf.Abs(_rigidbody.velocity.x) < 8)
+        {
+            _rigidbody.AddForce(Vector2.right * x * 15);//AddForce ja té en compte deltaTime
+        }
+
+        if (Mathf.Abs(_rigidbody.velocity.x) >= 8)
+        {
+            _rigidbody.velocity = new Vector2((_rigidbody.velocity.x/Mathf.Abs(_rigidbody.velocity.x)) * 8, _rigidbody.velocity.y); 
+        }
+        _lastX = x;
+        _lastY = y;
     }
 
     public virtual void OnJumpHighButton() { }

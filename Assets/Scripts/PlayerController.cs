@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     private PlayerModel _playerModel;
 
 	void Awake () {
+        
         _playerModel = GetComponent<PlayerModel>();
 	}
 	

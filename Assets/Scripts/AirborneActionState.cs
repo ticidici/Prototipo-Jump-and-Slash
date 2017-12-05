@@ -7,6 +7,8 @@ public class AirborneActionState : ActionState {
     float _fallMultiplier = 2.3f;
     float _lowJumpMultiplier = 2f;
 
+    float _initialXVelocity = 0f;
+
     public AirborneActionState(PlayerModel player) : base(player)
     {
     }
@@ -27,6 +29,8 @@ public class AirborneActionState : ActionState {
     {
         base.OnStateEnter();
         Debug.Log("Entering airborne");
+        _initialXVelocity = _rigidbody.velocity.x;
+        Debug.Log("initial velocity = " + _initialXVelocity);
     }
 
     public override void OnStateExit()
@@ -38,7 +42,39 @@ public class AirborneActionState : ActionState {
 
     public override void MovementInput(float x, float y)
     {
-        Vector2 currentPosition = _transform.position;
-        _transform.position = currentPosition + Vector2.right * x * 8* 0.8f * Time.deltaTime;//En el aire debería una aceleración, no puedes cambiar de ritmo a la misma velocidad que ya llevas
+        //a favor del momentum
+        if (x * _initialXVelocity > 0)
+        {
+            if (Mathf.Abs(_rigidbody.velocity.x) < 6)//Si va lento, acelera menos
+            {
+                _rigidbody.AddForce(Vector2.right * x * 10);
+            }
+            else if (Mathf.Abs(_rigidbody.velocity.x) >= 6)//Si va rápido, acelera más
+            {
+                _rigidbody.AddForce(Vector2.right * x * 15);
+            }
+        }
+        else if (x * _initialXVelocity < 0)//en contra del momentum, sin pulsar nada sigue el arco
+        {
+            if (Mathf.Abs(_rigidbody.velocity.x) >= 6)//Si va rápuido pierde momentum también rápido
+            {
+                _rigidbody.AddForce(Vector2.right * x * 15);
+            }
+            else if (Mathf.Abs(_initialXVelocity) >= 6.5f)//Si ha empezado el salto yendo a mucha velocidad, puede perder momentum más rápido 
+            {
+                _rigidbody.AddForce(Vector2.right * x * 12);
+            }
+            else
+            {
+                _rigidbody.AddForce(Vector2.right * x * 10);
+            }
+        }
+
+        //Restringir máximo
+
+        
+ 
+        _lastX = x;
+        _lastY = y;
     }
 }

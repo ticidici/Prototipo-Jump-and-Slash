@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundedActionState : ActionState {
 
-    private float _lastX = 0, _lastY = 0;
+    
 
     public GroundedActionState(PlayerModel player) : base(player)
     {
@@ -28,14 +28,13 @@ public class GroundedActionState : ActionState {
     public override void MovementInput(float x, float y)
     {
         base.MovementInput(x, y);
-        _lastX = x;
-        _lastY = y;
+
     }
 
     public override void OnJumpHighButton()
     {
         base.OnJumpHighButton();
-        _rigidbody.velocity = Vector2.up * 8;
+        _rigidbody.velocity += Vector2.up * 8;
         //Change state
         _player.SetActionState(new AirborneActionState(_player));
     }
