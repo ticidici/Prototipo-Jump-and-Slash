@@ -23,6 +23,11 @@ public class AirborneActionState : ActionState {
         {
             _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
         }
+
+        if (Mathf.Abs(_rigidbody.velocity.y) > 20)
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, (_rigidbody.velocity.y / Mathf.Abs(_rigidbody.velocity.y)) * 20);
+        }
     }
 
     public override void OnStateEnter()
@@ -54,7 +59,7 @@ public class AirborneActionState : ActionState {
                 _rigidbody.AddForce(Vector2.right * x * 15);
             }
         }
-        else if (x * _initialXVelocity < 0)//en contra del momentum, sin pulsar nada sigue el arco
+        else if (x * _initialXVelocity < 0 || _initialXVelocity == 0)//en contra del momentum, sin pulsar nada sigue el arco
         {
             if (Mathf.Abs(_rigidbody.velocity.x) >= 6)//Si va rápuido pierde momentum también rápido
             {
@@ -71,6 +76,10 @@ public class AirborneActionState : ActionState {
         }
 
         //Restringir máximo
+        if (Mathf.Abs(_rigidbody.velocity.x) > 8)
+        {
+            _rigidbody.velocity = new Vector2((_rigidbody.velocity.x / Mathf.Abs(_rigidbody.velocity.x)) * 8, _rigidbody.velocity.y);
+        }
 
         
  

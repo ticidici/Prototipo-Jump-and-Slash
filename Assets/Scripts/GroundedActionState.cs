@@ -34,7 +34,14 @@ public class GroundedActionState : ActionState {
     public override void OnJumpHighButton()
     {
         base.OnJumpHighButton();
-        _rigidbody.velocity += Vector2.up * 8;
+        if (Mathf.Abs(_rigidbody.velocity.x) > 6)
+        {
+            _rigidbody.velocity += Vector2.up * 8;
+        }
+        else
+        {
+            _rigidbody.velocity += Vector2.up * 6.5f;
+        }
         //Change state
         _player.SetActionState(new AirborneActionState(_player));
     }
