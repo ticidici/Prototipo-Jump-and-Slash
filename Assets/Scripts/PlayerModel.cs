@@ -5,15 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerModel : MonoBehaviour {
 
-    //Hide in inspector
+    //Hide in inspector (o no, da un poco igual)
     public bool _jumpButtonPressed = false;
 
-    private ActionState _currentActionState;
+    public ActionState _currentActionState;
+    public ActionState _airborneActionState;
+    public ActionState _groundedActionState;
+
+    void Awake()
+    {
+        _groundedActionState = new GroundedActionState(this);
+        _airborneActionState = new AirborneActionState(this);
+    }
 
     void Start ()
     {
-        SetActionState(new AirborneActionState(this));
-	}
+        SetActionState(_airborneActionState);
+    }
 	
 	void Update ()
     {
@@ -55,9 +63,6 @@ public class PlayerModel : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            SetActionState(new GroundedActionState(this));
-        }
+        //Recibir daño
     }
 }

@@ -17,7 +17,6 @@ public class GroundedActionState : ActionState {
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        Debug.Log("Entering grounded");
     }
 
     public override void OnStateExit()
@@ -42,8 +41,7 @@ public class GroundedActionState : ActionState {
         {
             _rigidbody.velocity += Vector2.up * 6.5f;
         }
-        //Change state
-        _player.SetActionState(new AirborneActionState(_player));
+        //Si dejamos el cambio de estado para ground sensor podemos hacer una transición a jump squat antes de saltar, también sirve por si hay algún obstáculo que te impida saltar
     }
 
     public override void OnJumpLongButton()

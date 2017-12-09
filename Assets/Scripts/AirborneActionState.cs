@@ -33,9 +33,7 @@ public class AirborneActionState : ActionState {
     public override void OnStateEnter()
     {
         base.OnStateEnter();
-        Debug.Log("Entering airborne");
         _initialXVelocity = _rigidbody.velocity.x;
-        Debug.Log("initial velocity = " + _initialXVelocity);
     }
 
     public override void OnStateExit()
