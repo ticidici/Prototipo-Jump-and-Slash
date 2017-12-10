@@ -7,6 +7,7 @@ public class PlayerModel : MonoBehaviour {
 
     //Hide in inspector (o no, da un poco igual)
     public bool _jumpButtonPressed = false;
+    public bool _isLongJump = false;
 
     public ActionState _currentActionState;
     public ActionState _airborneActionState;
@@ -32,15 +33,15 @@ public class PlayerModel : MonoBehaviour {
     {
         if (_currentActionState != null)
         {
-            _currentActionState.OnStateExit();
+            _currentActionState.OnStateExit(state);
         }
-
+        ActionState exitingState = _currentActionState;
         _currentActionState = state;
         gameObject.name = "Jugador - " + state.GetType().Name;
 
         if (_currentActionState != null)
         {
-            _currentActionState.OnStateEnter();
+            _currentActionState.OnStateEnter(exitingState);
         }
     }
 

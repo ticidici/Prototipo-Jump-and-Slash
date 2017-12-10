@@ -15,30 +15,33 @@ public class AirborneActionState : ActionState {
 
     public override void Tick()
     {
-        if (_rigidbody.velocity.y < 0)
+        if (!_player._isLongJump)
         {
-            _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (_rigidbody.velocity.y > 0 && _player._jumpButtonPressed == false)
-        {
-            _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
-        }
+            if (_rigidbody.velocity.y < 0)
+            {
+                _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (_fallMultiplier - 1) * Time.deltaTime;
+            }
+            else if (_rigidbody.velocity.y > 0 && _player._jumpButtonPressed == false)
+            {
+                _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (_lowJumpMultiplier - 1) * Time.deltaTime;
+            }
 
-        if (Mathf.Abs(_rigidbody.velocity.y) > 20)
-        {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, (_rigidbody.velocity.y / Mathf.Abs(_rigidbody.velocity.y)) * 20);
+            if (Mathf.Abs(_rigidbody.velocity.y) > 20)
+            {
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, (_rigidbody.velocity.y / Mathf.Abs(_rigidbody.velocity.y)) * 20);
+            }
         }
     }
 
-    public override void OnStateEnter()
+    public override void OnStateEnter(ActionState lastState)
     {
-        base.OnStateEnter();
+        base.OnStateEnter(lastState);
         _initialXVelocity = _rigidbody.velocity.x;
     }
 
-    public override void OnStateExit()
+    public override void OnStateExit(ActionState nextState)
     {
-        base.OnStateExit();
+        base.OnStateExit(nextState);
     }
 
 
@@ -74,9 +77,19 @@ public class AirborneActionState : ActionState {
         }
 
         //Restringir máximo
-        if (Mathf.Abs(_rigidbody.velocity.x) > 8)
+        if (!_player._isLongJump)//velocidad máxima para salto normal o caída
         {
-            _rigidbody.velocity = new Vector2((_rigidbody.velocity.x / Mathf.Abs(_rigidbody.velocity.x)) * 8, _rigidbody.velocity.y);
+            if (Mathf.Abs(_rigidbody.velocity.x) > 8)
+            {
+                _rigidbody.velocity = new Vector2((_rigidbody.velocity.x / Mathf.Abs(_rigidbody.velocity.x)) * 8, _rigidbody.velocity.y);
+            }
+        }
+        else //velocidad máxima para salto largo
+        {
+            if (Mathf.Abs(_rigidbody.velocity.x) > 12)
+            {
+                _rigidbody.velocity = new Vector2((_rigidbody.velocity.x / Mathf.Abs(_rigidbody.velocity.x)) * 12, _rigidbody.velocity.y);
+            }
         }
 
         
