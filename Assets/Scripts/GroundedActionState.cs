@@ -94,15 +94,8 @@ public class GroundedActionState : ActionState {
     public override void OnJumpLongButton()
     {
         base.OnJumpLongButton();
-        if (_rigidbody.velocity.x != 0)
-        {
-            _rigidbody.velocity = new Vector2((_rigidbody.velocity.x / Mathf.Abs(_rigidbody.velocity.x)) * _xLongJumpVelocity, _yLongJumpVelocity);
-            _player._isLongJump = true;//el problema aquí es si no llegara a despegar del suelo, de momento lo hago así
-            Debug.Log("Salto largo");
-        }
-        else
-        {
-            OnJumpHighButton();
-        }
+        _rigidbody.velocity = new Vector2(_player._facingDirection * _xLongJumpVelocity, _yLongJumpVelocity);
+        _player._isLongJump = true;//el problema aquí es si no llegara a despegar del suelo, de momento lo hago así
+        Debug.Log("Salto largo");
     }
 }

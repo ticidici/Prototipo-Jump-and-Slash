@@ -9,6 +9,8 @@ public class PlayerModel : MonoBehaviour {
     public bool _jumpButtonPressed = false;
     public bool _isLongJump = false;
 
+    public int _facingDirection = 1;
+
     public ActionState _currentActionState;
     public ActionState _airborneActionState;
     public ActionState _groundedActionState;
@@ -21,9 +23,13 @@ public class PlayerModel : MonoBehaviour {
     [Range(0, 3)]
     public int _powerStateInEditor = 0;
 
+    private Rigidbody2D _rigidbody;
+
 
     void Awake()
     {
+        _rigidbody = GetComponent<Rigidbody2D>();
+
         _groundedActionState = new GroundedActionState(this);
         _airborneActionState = new AirborneActionState(this);
 
@@ -40,6 +46,10 @@ public class PlayerModel : MonoBehaviour {
 	
 	void Update ()
     {
+        if (_rigidbody.velocity.x != 0)
+        {
+            _facingDirection = (int)(_rigidbody.velocity.x / Mathf.Abs(_rigidbody.velocity.x));
+        }
         _currentActionState.Tick();
         _currentPowerState.Tick();
 
