@@ -21,14 +21,14 @@ public class GroundSensor : MonoBehaviour {
     {
         if (collider.gameObject.CompareTag("Ground"))
         {
-            Debug.Log("Entering new ground");
+            //Debug.Log("Entering new ground");
             if (_groundColliders == 0)
             {
                 _groundColliders++;
                 _player.SetActionState(_player._groundedActionState);
             }
             else { _groundColliders++; }
-            Debug.Log("Number of grounds colliding: " + _groundColliders);
+            //Debug.Log("Number of grounds colliding: " + _groundColliders);
         }
         
     }
@@ -37,14 +37,14 @@ public class GroundSensor : MonoBehaviour {
     {
         if (collider.gameObject.CompareTag("Ground"))
         {
-            Debug.Log("Leaving one ground");
+            //Debug.Log("Leaving one ground");
             _groundColliders--;
             if (_groundColliders == 0)
             {
                 _player.SetActionState(_player._airborneActionState);
-                Debug.Log("Airborne");
+                //Debug.Log("Airborne");
             }
-            Debug.Log("Number of grounds colliding: " + _groundColliders);
+            //Debug.Log("Number of grounds colliding: " + _groundColliders);
         }  
     }
 }

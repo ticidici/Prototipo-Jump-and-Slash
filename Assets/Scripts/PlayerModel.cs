@@ -10,6 +10,7 @@ public class PlayerModel : MonoBehaviour {
     public bool _isLongJump = false;
 
     public int _facingDirection = 1;
+    public Vector2 _snapArea = new Vector2(2.5f, 2.5f);
 
     public ActionState _currentActionState;
     public ActionState _airborneActionState;
@@ -25,6 +26,11 @@ public class PlayerModel : MonoBehaviour {
 
     private Rigidbody2D _rigidbody;
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireCube(transform.position, new Vector3(_snapArea.x, _snapArea.y, 0));
+    }
 
     void Awake()
     {

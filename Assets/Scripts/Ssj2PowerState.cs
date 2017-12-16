@@ -31,6 +31,10 @@ public class Ssj2PowerState : PowerState {
         _xMaxAirSpeed = 12f;
         _xMaxAirSpeedLongJump = 19f;
         _yMaxAirSpeed = 20f;
+        //Propel on enemy speeds
+        _highJumpPropelVelocity = 15f;
+        _longJumpXPropelVelocity = 15f;
+        _longJumpYPropelVelocity = 4f;
     }
 
     public override void Tick()

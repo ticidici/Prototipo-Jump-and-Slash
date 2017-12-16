@@ -28,6 +28,10 @@ public abstract class PowerState {
     protected float _xMaxAirSpeed;
     protected float _xMaxAirSpeedLongJump;
     protected float _yMaxAirSpeed;
+    //Propel on enemy speeds
+    protected float _highJumpPropelVelocity;
+    protected float _longJumpXPropelVelocity;
+    protected float _longJumpYPropelVelocity;
 
 
     protected PowerState _lastState;
@@ -70,4 +74,8 @@ public abstract class PowerState {
     public virtual float GetXMaxAirSpeed() { return _xMaxAirSpeed; }
     public virtual float GetXMaxAirSpeedLongJump() { return _xMaxAirSpeedLongJump; }
     public virtual float GetYMaxAirSpeed() { return _yMaxAirSpeed; }
+
+    public virtual float GetHighJumpPropelVelocity() { return _highJumpPropelVelocity; }
+    public virtual float GetLongJumpXPropelVelocity() { return _longJumpXPropelVelocity; }
+    public virtual float GetLongJumpYPropelVelocity() { return _longJumpYPropelVelocity; }
 }

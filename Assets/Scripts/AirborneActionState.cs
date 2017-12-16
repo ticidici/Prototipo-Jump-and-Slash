@@ -14,8 +14,12 @@ public class AirborneActionState : ActionState {
     float _losingMomentumGroundVelocityThreshold = 0f;
     float _xMaxAirSpeed = 0f;
     float _xMaxAirSpeedLongJump = 0f;
+    float _highJumpPropelVelocity = 0f;
+    float _longJumpXPropelVelocity = 0f;
+    float _longJumpYPropelVelocity = 0f;
 
     float _initialXVelocity = 0f;
+    
 
     public AirborneActionState(PlayerModel player) : base(player)
     {
@@ -66,6 +70,9 @@ public class AirborneActionState : ActionState {
         _losingMomentumGroundVelocityThreshold = _player._currentPowerState.GetLosingMomentumGroundVelocityThreshold();
         _xMaxAirSpeed = _player._currentPowerState.GetXMaxAirSpeed();
         _xMaxAirSpeedLongJump = _player._currentPowerState.GetXMaxAirSpeedLongJump();
+        _highJumpPropelVelocity = _player._currentPowerState.GetHighJumpPropelVelocity();
+        _longJumpXPropelVelocity = _player._currentPowerState.GetLongJumpXPropelVelocity();
+        _longJumpYPropelVelocity = _player._currentPowerState.GetLongJumpYPropelVelocity();
     }
 
     public override void MovementInput(float x, float y)
@@ -115,5 +122,44 @@ public class AirborneActionState : ActionState {
         }
 
         base.MovementInput(x, y);
+    }
+
+    public override void OnJumpHighButton()
+    {
+        base.OnJumpHighButton();
+        Collider2D colliderInRange = Physics2D.OverlapBox(_transform.position, _player._snapArea, 0, LayerMask.GetMask("Enemy"));
+
+        if (colliderInRange)
+        {
+            colliderInRange.gameObject.GetComponent<Enemy>().PropelledOnMe(-Vector2.up * _highJumpPropelVelocity);
+            _player.transform.position = colliderInRange.transform.position;
+            _rigidbody.velocity = Vector2.up * _highJumpPropelVelocity;
+            _player._isLongJump = false;
+
+        }
+    }
+
+    public override void OnJumpLongButton()
+    {
+        base.OnJumpLongButton();
+        Collider2D colliderInRange = Physics2D.OverlapBox(_transform.position, _player._snapArea, 0, LayerMask.GetMask("Enemy"));
+
+        if (colliderInRange)
+        {
+            if (_lastX != 0)
+            {
+                colliderInRange.gameObject.GetComponent<Enemy>().PropelledOnMe(-Vector2.right * (_lastX / Mathf.Abs(_lastX)) * _longJumpXPropelVelocity);
+                _player.transform.position = colliderInRange.transform.position;
+                _rigidbody.velocity = new Vector2(_lastX / Mathf.Abs(_lastX) * _longJumpXPropelVelocity, _longJumpYPropelVelocity);
+            }
+            else
+            {
+                colliderInRange.gameObject.GetComponent<Enemy>().PropelledOnMe(-Vector2.right * _player._facingDirection * _longJumpXPropelVelocity);
+                _player.transform.position = colliderInRange.transform.position;
+                _rigidbody.velocity = new Vector2(_player._facingDirection * _longJumpXPropelVelocity, _longJumpYPropelVelocity);
+            }
+
+            _player._isLongJump = true;
+        }
     }
 }
