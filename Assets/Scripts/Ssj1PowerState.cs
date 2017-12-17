@@ -45,7 +45,7 @@ public class Ssj1PowerState : PowerState {
     {
         base.OnStateEnter(lastState);
         _player.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.yellow);
-        _player._powerStateInEditor = 0;
+        _player._changeToPowerState = 0;
     }
 
     public override void OnStateExit(PowerState nextState)

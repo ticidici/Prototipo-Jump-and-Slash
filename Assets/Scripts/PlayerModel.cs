@@ -21,8 +21,8 @@ public class PlayerModel : MonoBehaviour {
     public PowerState _ssj2PowerState;
     public PowerState _ssj3PowerState;
 
-    [Range(0, 3)]
-    public int _powerStateInEditor = 0;
+    [Range(0, 3), HideInInspector]
+    public int _changeToPowerState = 0;
 
     private Rigidbody2D _rigidbody;
 
@@ -59,9 +59,9 @@ public class PlayerModel : MonoBehaviour {
         _currentActionState.Tick();
         _currentPowerState.Tick();
 
-        if (_powerStateInEditor != 0)
+        if (_changeToPowerState != 0)
         {
-            switch (_powerStateInEditor)
+            switch (_changeToPowerState)
             {
                 case 1:
                     SetPowerState(_ssj1PowerState);

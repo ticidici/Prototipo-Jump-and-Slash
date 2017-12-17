@@ -17,9 +17,9 @@ public class Ssj3PowerState : PowerState {
         //High Jump and falling air drift
         _horizontalAirVelocityThreshold = 6f;
         _losingMomentumGroundVelocityThreshold = 6.5f;
-        _airAcceleration0 = 15f;
-        _airAcceleration1 = 21f;
-        _airAcceleration2 = 18f;
+        _airAcceleration0 = 18f;
+        _airAcceleration1 = 24f;
+        _airAcceleration2 = 21f;
         //Long Jump
         _xLongJumpVelocity = 28f;
         _yLongJumpVelocity = 10f;
@@ -45,7 +45,7 @@ public class Ssj3PowerState : PowerState {
     {
         base.OnStateEnter(lastState);
         _player.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.red);
-        _player._powerStateInEditor = 0;
+        _player._changeToPowerState = 0;
     }
 
     public override void OnStateExit(PowerState nextState)

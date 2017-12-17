@@ -16,6 +16,14 @@ public class PowerGauge : MonoBehaviour {
     private Vector3 _dropVector;
     private const int _unitsPerBar = 10000;
 
+    private PlayerModel _player;
+
+    void Awake()
+    {
+        _player = FindObjectOfType<PlayerModel>();
+        if (!_player) { Debug.LogError("No player found", this); }
+    }
+
     void Start ()
     {
         _redPannel.localScale = new Vector3(0, 1, 0);
@@ -46,11 +54,21 @@ public class PowerGauge : MonoBehaviour {
 
     void IncreasePower(int units)
     {
+        float previousLevel = _powerLevel;
         _powerLevel += units;
-        Debug.Log("" + units + "   " + _powerLevel);
-        Debug.Log(((_powerLevel % _unitsPerBar) / _unitsPerBar).ToString("F4"));
-
         if (_powerLevel > _maxPowerLevel) { _powerLevel = _maxPowerLevel; }
+
+        if (previousLevel <= 2 * _unitsPerBar)
+        {
+            if (_powerLevel > 2 * _unitsPerBar)//Si estás en ssj1 o ssj2 y pasas a ssj3
+            {
+                _player._changeToPowerState = 3;
+            }
+            else if (previousLevel <= _unitsPerBar && _powerLevel > _unitsPerBar)//Si estás en ssj1 y pasas a ssj2
+            {
+                _player._changeToPowerState = 2;
+            }
+        }
 
         if (_powerLevel > 2 * _unitsPerBar)
         {
@@ -81,9 +99,21 @@ public class PowerGauge : MonoBehaviour {
 
     void DecreasePower(float units)
     {
+        float previousLevel = _powerLevel;
         _powerLevel -= units;
-
         if (_powerLevel < 0) { _powerLevel = 0; }
+
+        if (previousLevel > _unitsPerBar)
+        {
+            if (_powerLevel <= _unitsPerBar)//Si estás en ssj3 o ssj2 y pasas a ssj1
+            {
+                _player._changeToPowerState = 1;
+            }
+            else if (previousLevel > 2 * _unitsPerBar && _powerLevel <= 2 * _unitsPerBar)//Si estás en ssj3 y pasas a ssj2
+            {
+                _player._changeToPowerState = 2;
+            }
+        }
 
         if (_powerLevel > 2 * _unitsPerBar)
         {
