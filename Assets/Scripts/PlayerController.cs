@@ -60,5 +60,9 @@ public class PlayerController : MonoBehaviour {
 
         _playerModel.DirectionBindings(x, y);
 
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Joystick1Button4))
+        {
+            _playerModel.OnReleaseEnergyButton();
+        }
     }
 }

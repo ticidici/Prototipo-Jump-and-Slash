@@ -25,6 +25,7 @@ public class PlayerModel : MonoBehaviour {
     public int _changeToPowerState = 0;
 
     private Rigidbody2D _rigidbody;
+    private PowerGauge _powerGauge;
 
     void OnDrawGizmos()
     {
@@ -35,6 +36,8 @@ public class PlayerModel : MonoBehaviour {
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _powerGauge = FindObjectOfType<PowerGauge>();
+        if (!_powerGauge) { Debug.Log("No power gauge found"); }
 
         _groundedActionState = new GroundedActionState(this);
         _airborneActionState = new AirborneActionState(this);
@@ -125,6 +128,11 @@ public class PlayerModel : MonoBehaviour {
     public void OnJumpLongButton()
     {
         _currentActionState.OnJumpLongButton();
+    }
+
+    public void OnReleaseEnergyButton()
+    {
+        _powerGauge.ReleaseEnergy(10000);
     }
 
     void OnCollisionEnter2D(Collision2D collision)

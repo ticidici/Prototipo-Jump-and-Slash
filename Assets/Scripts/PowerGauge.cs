@@ -140,4 +140,9 @@ public class PowerGauge : MonoBehaviour {
         }
 
     }
+
+    public void ReleaseEnergy(int units)
+    {
+        DecreasePower(units);
+    }
 }
