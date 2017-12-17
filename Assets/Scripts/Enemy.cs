@@ -12,6 +12,11 @@ public class Enemy : MonoBehaviour {
     public float _despawnTime = 1f;
     public float _respawnTime = 5f;
 
+    private int _unitsPerHit = 3900;
+
+    public delegate void HitAction(int units);
+    public static event HitAction OnHit;
+
     void Awake ()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -25,6 +30,11 @@ public class Enemy : MonoBehaviour {
 
     public void PropelledOnMe(Vector2 speedVector)
     {
+        if (OnHit != null)
+        {
+            OnHit(_unitsPerHit);
+        }
+
         _collider.enabled = false;
         _rigidbody.velocity = speedVector;
         StartCoroutine(DespawnAndRespawn());
