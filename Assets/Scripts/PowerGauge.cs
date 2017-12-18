@@ -18,6 +18,9 @@ public class PowerGauge : MonoBehaviour {
 
     private PlayerModel _player;
 
+    public delegate void PowerlessAction(bool isPowerless);
+    public static event PowerlessAction OnPowerless;
+
     void Awake()
     {
         _player = FindObjectOfType<PlayerModel>();
@@ -52,6 +55,11 @@ public class PowerGauge : MonoBehaviour {
         Enemy.OnHit -= IncreasePower;
     }
 
+    public float GetPowerLevel()
+    {
+        return _powerLevel;
+    }
+
     void IncreasePower(int units)
     {
         float previousLevel = _powerLevel;
@@ -62,11 +70,21 @@ public class PowerGauge : MonoBehaviour {
         {
             if (_powerLevel > 2 * _unitsPerBar)//Si estás en ssj1 o ssj2 y pasas a ssj3
             {
-                _player._changeToPowerState = 3;
+                //_player._changeToPowerState = 3;
+                _player.SetPowerState(_player._ssj3PowerState);//si va a impulsarse queremos cambiar el estado ya, no podemos esperar al próximo frame (faltaría hacer la comprobación)
             }
             else if (previousLevel <= _unitsPerBar && _powerLevel > _unitsPerBar)//Si estás en ssj1 y pasas a ssj2
             {
-                _player._changeToPowerState = 2;
+                //_player._changeToPowerState = 2;
+                _player.SetPowerState(_player._ssj2PowerState);
+            }
+        }
+
+        if (previousLevel == 0 && _powerLevel > 0)
+        {
+            if (OnPowerless != null)
+            {
+                OnPowerless(false);
             }
         }
 
@@ -108,10 +126,19 @@ public class PowerGauge : MonoBehaviour {
             if (_powerLevel <= _unitsPerBar)//Si estás en ssj3 o ssj2 y pasas a ssj1
             {
                 _player._changeToPowerState = 1;
+                //_player.SetPowerState(_player._ssj1PowerState);
             }
             else if (previousLevel > 2 * _unitsPerBar && _powerLevel <= 2 * _unitsPerBar)//Si estás en ssj3 y pasas a ssj2
             {
                 _player._changeToPowerState = 2;
+                //_player.SetPowerState(_player._ssj2PowerState);
+            }
+        }
+        if (previousLevel > 0 && _powerLevel == 0)
+        {
+            if (OnPowerless != null)
+            {
+                OnPowerless(true);
             }
         }
 

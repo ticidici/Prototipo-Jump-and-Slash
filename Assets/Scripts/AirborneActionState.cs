@@ -133,6 +133,7 @@ public class AirborneActionState : ActionState {
         {
             colliderInRange.gameObject.GetComponent<Enemy>().PropelledOnMe(-Vector2.up * _highJumpPropelVelocity);
             _player.transform.position = colliderInRange.transform.position;
+            GetPowerStateValues();
             _rigidbody.velocity = Vector2.up * _highJumpPropelVelocity;
             _player._isLongJump = false;
 
@@ -150,12 +151,14 @@ public class AirborneActionState : ActionState {
             {
                 colliderInRange.gameObject.GetComponent<Enemy>().PropelledOnMe(-Vector2.right * (_lastX / Mathf.Abs(_lastX)) * _longJumpXPropelVelocity);
                 _player.transform.position = colliderInRange.transform.position;
+                GetPowerStateValues();
                 _rigidbody.velocity = new Vector2(_lastX / Mathf.Abs(_lastX) * _longJumpXPropelVelocity, _longJumpYPropelVelocity);
             }
             else
             {
                 colliderInRange.gameObject.GetComponent<Enemy>().PropelledOnMe(-Vector2.right * _player._facingDirection * _longJumpXPropelVelocity);
                 _player.transform.position = colliderInRange.transform.position;
+                GetPowerStateValues();
                 _rigidbody.velocity = new Vector2(_player._facingDirection * _longJumpXPropelVelocity, _longJumpYPropelVelocity);
             }
 
