@@ -26,6 +26,7 @@ public class PlayerModel : MonoBehaviour {
 
     private Rigidbody2D _rigidbody;
     private PowerGauge _powerGauge;
+    private ParticleSystem _particleSystem;
 
     void OnDrawGizmos()
     {
@@ -36,6 +37,7 @@ public class PlayerModel : MonoBehaviour {
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _particleSystem = GetComponent<ParticleSystem>();
         _powerGauge = FindObjectOfType<PowerGauge>();
         if (!_powerGauge) { Debug.Log("No power gauge found"); }
 
@@ -132,6 +134,10 @@ public class PlayerModel : MonoBehaviour {
 
     public void OnReleaseEnergyButton()
     {
+        if (_powerGauge.GetPowerLevel() != 0)
+        {
+            _particleSystem.Emit(200);
+        }
         _powerGauge.ReleaseEnergy(10000);
     }
 

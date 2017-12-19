@@ -36,7 +36,6 @@ public class CameraController : MonoBehaviour {
         if (_currentTargetSize != _camera.orthographicSize && Mathf.Abs(_currentTargetSize - size) < _zoomVelocity / 60)
         {
             _camera.orthographicSize = _currentTargetSize;
-            Debug.Log("Fijando cámara por estar a " + Mathf.Abs(_currentTargetSize - size));
         }
 	}
 
