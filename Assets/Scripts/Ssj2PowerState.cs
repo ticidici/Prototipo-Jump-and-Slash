@@ -7,16 +7,16 @@ public class Ssj2PowerState : PowerState {
     public Ssj2PowerState(PlayerModel player) : base(player)
     {
         //Ground Movement
-        _xGroundAcceleration = 20f;
-        _groundReleaseDeceleration = 0.6f;
-        _groundSkiddingDeceleration = 0.5f;
+        _xGroundAcceleration = 30f;
+        _groundReleaseDeceleration = 0.25f;
+        _groundSkiddingDeceleration = 0.25f;
         //High Jump initial condition and impulse
-        _highJumpGroundVelocityThreshold = 6f;
+        _highJumpGroundVelocityThreshold = 0f;
         _yHighJumpVelocity0 = 10.5f;
         _yHighJumpVelocity1 = 12f;
         //High Jump and falling air drift
-        _horizontalAirVelocityThreshold = 6f;
-        _losingMomentumGroundVelocityThreshold = 6.5f;
+        _horizontalAirVelocityThreshold = 0f;
+        _losingMomentumGroundVelocityThreshold = 0f;
         _airAcceleration0 = 12f;
         _airAcceleration1 = 18f;
         _airAcceleration2 = 15f;

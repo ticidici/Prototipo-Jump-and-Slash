@@ -17,6 +17,7 @@ public class PowerGauge : MonoBehaviour {
     private const int _unitsPerBar = 10000;
 
     private PlayerModel _player;
+    private CameraController _camera;
 
     public delegate void PowerlessAction(bool isPowerless);
     public static event PowerlessAction OnPowerless;
@@ -25,6 +26,9 @@ public class PowerGauge : MonoBehaviour {
     {
         _player = FindObjectOfType<PlayerModel>();
         if (!_player) { Debug.LogError("No player found", this); }
+
+        _camera = FindObjectOfType<CameraController>();
+        if (!_camera) { Debug.LogError("No camera found", this); }
     }
 
     void Start ()
@@ -71,12 +75,14 @@ public class PowerGauge : MonoBehaviour {
             if (_powerLevel > 2 * _unitsPerBar)//Si estás en ssj1 o ssj2 y pasas a ssj3
             {
                 //_player._changeToPowerState = 3;
-                _player.SetPowerState(_player._ssj3PowerState);//si va a impulsarse queremos cambiar el estado ya, no podemos esperar al próximo frame (faltaría hacer la comprobación)
+                _player.SetPowerState(_player._ssj3PowerState);//si va a impulsarse queremos cambiar el estado ya, no podemos esperar al próximo frame
+                _camera.ChangeCameraTargetSize(3);
             }
             else if (previousLevel <= _unitsPerBar && _powerLevel > _unitsPerBar)//Si estás en ssj1 y pasas a ssj2
             {
                 //_player._changeToPowerState = 2;
                 _player.SetPowerState(_player._ssj2PowerState);
+                _camera.ChangeCameraTargetSize(2);
             }
         }
 
@@ -127,11 +133,13 @@ public class PowerGauge : MonoBehaviour {
             {
                 _player._changeToPowerState = 1;
                 //_player.SetPowerState(_player._ssj1PowerState);
+                _camera.ChangeCameraTargetSize(1);
             }
             else if (previousLevel > 2 * _unitsPerBar && _powerLevel <= 2 * _unitsPerBar)//Si estás en ssj3 y pasas a ssj2
             {
                 _player._changeToPowerState = 2;
                 //_player.SetPowerState(_player._ssj2PowerState);
+                _camera.ChangeCameraTargetSize(2);
             }
         }
         if (previousLevel > 0 && _powerLevel == 0)
